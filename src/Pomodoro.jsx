@@ -3,12 +3,16 @@ import Navbar from "./Navbar";
 import NewTask from "./NewTask";
 import Timer from "./Timer";
 import { useEffect } from "react";
+import PomodoroMode from "./component/PomodoroMode";
+
 function Pomodoro() {
   const [minutes, setMinutes] = useState(1);
   const totalTime = minutes * 60;
   const [currentTime, setCurrentTime] = useState(totalTime);
   const [isRunning, setIsRunning] = useState(false);
   const [timePercentage, setTimePercentage] = useState(0);
+  const [isBreak, setIsBreak] = useState(false);
+  const [activeMode, setActiveMode] = useState("pomodoro");
 
   useEffect(() => {
     let interval;
@@ -16,20 +20,23 @@ function Pomodoro() {
       interval = setInterval(() => {
         setCurrentTime((currentTime) => {
           const newTime = currentTime - 1;
-          console.log("Current time:", newTime);
           setTimePercentage(
-            Math.round(((totalTime - newTime) / totalTime) * 100)
-          );
-          console.log(
-            "Time percentage:",
             Math.round(((totalTime - newTime) / totalTime) * 100)
           );
           return newTime;
         });
       }, 1000);
     }
-    return () => clearInterval(interval);
+    return () =>{
+      clearInterval(interval);
+      
+
+    } 
   }, [isRunning, currentTime, totalTime]);
+
+  useEffect(() => {
+    setCurrentTime(minutes*60);
+  }, [minutes]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -39,7 +46,6 @@ function Pomodoro() {
       .padStart(2, "0")}`;
   };
   const handleStart = () => {
-    console.log("Starting timer");
     setIsRunning(true);
   };
   const handlePause = () => {
@@ -50,11 +56,22 @@ function Pomodoro() {
     setIsRunning(false);
     setCurrentTime(totalTime);
   };
+  const handleModeChange = (mode) => {
+    setActiveMode(mode);
+    if (mode === "pomodoro") {
+      setMinutes(25);
+    } else if (mode === "shortBreak") {
+      setMinutes(5);
+    } else if (mode === "longBreak") {
+      setMinutes(10);
+    }
+  };
 
   return (
     <div className="h-screen">
       <Navbar />
       <NewTask />
+      <PomodoroMode activeMode={activeMode} isRunning={isRunning}  onModeChange={handleModeChange} />
       <Timer
         minutes={minutes}
         setMinutes={setMinutes}
@@ -67,6 +84,7 @@ function Pomodoro() {
         handleStart={handleStart}
         handlePause={handlePause}
         handleRestart={handleRestart}
+        activeMode={activeMode}
       />
     </div>
   );

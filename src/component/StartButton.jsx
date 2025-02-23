@@ -1,7 +1,11 @@
 import { FaPlay } from "react-icons/fa";
-function StartButton({onClick}) {
+import { modeColors } from "../colors/colors";
+function StartButton({ onClick, activeMode }) {
   return (
-    <button onClick={onClick} className="border-2 hover:bg-blue-200 text-black p-3 rounded-full text-2xl">
+    <button
+      onClick={onClick}
+      className={`border-2 border-black hover:border-${modeColors[activeMode].tailwindClass} hover:text-blue-500 hover:bg-blue-200 text-black p-3 rounded-full text-2xl`}
+    >
       <FaPlay />
     </button>
   );

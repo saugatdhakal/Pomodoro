@@ -14,7 +14,22 @@ function Timer({
   handleStart,
   handlePause,
   handleRestart,
+  activeMode,
 }) {
+  const modeColor = {
+    pomodoro: {
+      active: "#2b7fff",
+      light: "#dbeafe",
+    },
+    shortBreak: {
+      active: "#22c55e",
+      light: "#dcfce7",
+    },
+    longBreak: {
+      active: "#ad46ff",
+      light: "#f3e8ff",
+    },
+  };
   return (
     <div
       style={{
@@ -32,12 +47,12 @@ function Timer({
           sign={{ value: "%", position: "end" }}
           text={formatTime(currentTime)}
           showMiniCircle={true}
-          showValue={true}
+          showValue={false}
           sx={{
-            strokeColor: "#ff0000",
-            barWidth: 5,
-            bgStrokeColor: "#ffffff",
-            bgColor: { value: "#000000", transparency: "20" },
+            strokeColor: modeColor[activeMode].active,
+            barWidth: 2,
+            bgStrokeColor: modeColor[activeMode].light,
+            bgColor: { value: "#ffffff", transparency: "20" },
             shape: "full",
             strokeLinecap: "round",
             valueSize: 13,
@@ -49,7 +64,7 @@ function Timer({
             textColor: "#000000",
             textFamily: "Trebuchet MS",
             loadingTime: 1000,
-            miniCircleColor: "#ff0000",
+            miniCircleColor: modeColor[activeMode].active,
             miniCircleSize: 5,
             valueAnimation: true,
             intersectionEnabled: true,
@@ -58,11 +73,11 @@ function Timer({
       </div>
       <div className="flex gap-4">
         {isRunning ? (
-          <PauseButton onClick={handlePause} />
+          <PauseButton activeMode={activeMode} onClick={handlePause} />
         ) : (
-          <StartButton onClick={handleStart} />
+          <StartButton activeMode={activeMode} onClick={handleStart} />
         )}
-        <RestartButton onClick={handleRestart} />
+        <RestartButton activeMode={activeMode} onClick={handleRestart} />
       </div>
     </div>
   );
