@@ -25,6 +25,25 @@ function Pomodoro() {
     setBreakAudio(audio);
   }, []);
 
+  const pomodorodefault = () => {
+    setActiveMode("pomodoro");
+    setMinutes(25);
+    setTimePercentage(0);
+    setIsBreak(false);
+  };
+  const shortBreakdefault = () => {
+    setMinutes(2);
+    setActiveMode("shortBreak");
+    setTimePercentage(0);
+    setIsBreak(true);
+  };
+  const longBreakdefault = () => {
+    setMinutes(10);
+    setActiveMode("longBreak");
+    setTimePercentage(0);
+    setIsBreak(true);
+  };
+
   const playBreakSound = async () => {
     if (breakAudio) {
       try {
@@ -57,10 +76,7 @@ function Pomodoro() {
       setIsRunning(false);
       if (isBreak) {
         // Break timer finished, switch back to pomodoro
-        setActiveMode("pomodoro");
-        setMinutes(25);
-        setTimePercentage(0);
-        setIsBreak(false);
+        pomodorodefault();
       } else {
         // Pomodoro timer finished, switch to break
         setIsBreak(true);
@@ -79,9 +95,7 @@ function Pomodoro() {
   useEffect(() => {
     if (isBreak) {
       playBreakSound();
-      setMinutes(5);
-      setActiveMode("shortBreak");
-      setTimePercentage(0);
+      shortBreakdefault();
       if (automaticBreak) {
         const breakTimer = setTimeout(() => {
           setIsRunning(true);
@@ -90,13 +104,6 @@ function Pomodoro() {
       }
     }
   }, [isBreak]);
-
-  // useEffect(() => {
-  //   return () => {
-  //     breakAudio.pause();
-  //     breakAudio.currentTime = 0;
-  //   };
-  // }, []);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
