@@ -4,6 +4,7 @@ import NewTask from "./NewTask";
 import Timer from "./Timer";
 import { useEffect } from "react";
 import PomodoroMode from "./component/PomodoroMode";
+import breakSound from "./audio/bedside-clock-alarm-95792.mp3";
 
 function Pomodoro() {
   const [minutes, setMinutes] = useState(1);
@@ -13,6 +14,32 @@ function Pomodoro() {
   const [timePercentage, setTimePercentage] = useState(0);
   const [isBreak, setIsBreak] = useState(false);
   const [activeMode, setActiveMode] = useState("pomodoro");
+  const automaticBreak = true;
+  const [breakAudio, setBreakAudio] = useState(null);
+
+  // Initialize audio on component mount
+  useEffect(() => {
+    const audio = new Audio(breakSound);
+    audio.preload = "auto";
+    audio.load();
+    setBreakAudio(audio);
+  }, []);
+
+  const playBreakSound = async () => {
+    if (breakAudio) {
+      try {
+        breakAudio.currentTime = 0;
+        breakAudio.volume = 0.5;
+        await breakAudio.play();
+        setTimeout(() => {
+          breakAudio.pause();
+          breakAudio.currentTime = 0;
+        }, 2000);
+      } catch (error) {
+        console.error("Error playing audio:", error);
+      }
+    }
+  };
 
   useEffect(() => {
     let interval;
@@ -26,17 +53,50 @@ function Pomodoro() {
           return newTime;
         });
       }, 1000);
+    } else if (isRunning && currentTime === 0) {
+      setIsRunning(false);
+      if (isBreak) {
+        // Break timer finished, switch back to pomodoro
+        setActiveMode("pomodoro");
+        setMinutes(25);
+        setTimePercentage(0);
+        setIsBreak(false);
+      } else {
+        // Pomodoro timer finished, switch to break
+        setIsBreak(true);
+      }
     }
-    return () =>{
-      clearInterval(interval);
-      
 
-    } 
-  }, [isRunning, currentTime, totalTime]);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isRunning, currentTime, totalTime, isBreak]);
 
   useEffect(() => {
-    setCurrentTime(minutes*60);
+    setCurrentTime(minutes * 60);
   }, [minutes]);
+
+  useEffect(() => {
+    if (isBreak) {
+      playBreakSound();
+      setMinutes(5);
+      setActiveMode("shortBreak");
+      setTimePercentage(0);
+      if (automaticBreak) {
+        const breakTimer = setTimeout(() => {
+          setIsRunning(true);
+        }, 2000);
+        return () => clearTimeout(breakTimer);
+      }
+    }
+  }, [isBreak]);
+
+  // useEffect(() => {
+  //   return () => {
+  //     breakAudio.pause();
+  //     breakAudio.currentTime = 0;
+  //   };
+  // }, []);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -58,10 +118,11 @@ function Pomodoro() {
   };
   const handleModeChange = (mode) => {
     setActiveMode(mode);
+    setIsBreak(false);
     if (mode === "pomodoro") {
       setMinutes(25);
     } else if (mode === "shortBreak") {
-      setMinutes(5);
+      setMinutes(1);
     } else if (mode === "longBreak") {
       setMinutes(10);
     }
@@ -71,7 +132,11 @@ function Pomodoro() {
     <div className="h-screen">
       <Navbar />
       <NewTask />
-      <PomodoroMode activeMode={activeMode} isRunning={isRunning}  onModeChange={handleModeChange} />
+      <PomodoroMode
+        activeMode={activeMode}
+        isRunning={isRunning}
+        onModeChange={handleModeChange}
+      />
       <Timer
         minutes={minutes}
         setMinutes={setMinutes}

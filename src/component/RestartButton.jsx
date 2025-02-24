@@ -1,9 +1,11 @@
 import { MdRestartAlt } from "react-icons/md";
-function RestartButton({ onClick }) {
+import { getHoverClasses } from "../colors/colors";
+
+function RestartButton({ onClick, activeMode }) {
   return (
     <button
       onClick={onClick}
-      className="border-2 hover:border-blue-200 hover:text-blue-500 border-black hover:bg-blue-200 text-black p-3 rounded-full text-2xl"
+      className={`border-2 border-black text-black p-3 rounded-full text-2xl transition-colors ${getHoverClasses(activeMode)}`}
     >
       <MdRestartAlt />
     </button>
