@@ -5,11 +5,12 @@ import Timer from "./Timer";
 import { useEffect } from "react";
 import PomodoroMode from "./component/PomodoroMode";
 import breakSound from "./audio/bedside-clock-alarm-95792.mp3";
+import Card from "./card";
 
 function Pomodoro() {
   // Timer durations in minutes
-  const [pomodoroTimer, setPomodoroTimer] = useState(1);
-  const [shortBreakTimer, setShortBreakTimer] = useState(1);
+  const [pomodoroTimer, setPomodoroTimer] = useState(25);
+  const [shortBreakTimer, setShortBreakTimer] = useState(5);
   const [longBreakTimer, setLongBreakTimer] = useState(15);
 
   const [minutes, setMinutes] = useState(1);
@@ -21,7 +22,7 @@ function Pomodoro() {
   const [activeMode, setActiveMode] = useState("pomodoro");
   const automaticBreak = true;
   const [breakAudio, setBreakAudio] = useState(null);
-
+  const [isCardOpen, setIsCardOpen] = useState(false);
   // Initialize audio on component mount
   useEffect(() => {
     const audio = new Audio(breakSound);
@@ -71,13 +72,14 @@ function Pomodoro() {
   };
 
   const updateDocumentTitle = (newTime) => {
-    if(newTime != 0){
-      document.title = `${activeMode[0].toUpperCase() + activeMode.slice(1)} - ${formatTime(newTime)}`;
-      }
-      else{
-        document.title = `Pomodoro Timer`;
-      }
-  }
+    if (newTime != 0) {
+      document.title = `${
+        activeMode[0].toUpperCase() + activeMode.slice(1)
+      } - ${formatTime(newTime)}`;
+    } else {
+      document.title = `Pomodoro Timer`;
+    }
+  };
 
   useEffect(() => {
     let interval;
@@ -116,6 +118,9 @@ function Pomodoro() {
     };
   }, [isRunning, currentTime, totalTime, isBreak]);
 
+  const toggleCard = () => {
+    setIsCardOpen(!isCardOpen);
+  };
   useEffect(() => {
     if (isBreak) {
       setCurrentTime(minutes * 60);
@@ -145,7 +150,7 @@ function Pomodoro() {
     if (mode === "pomodoro") {
       pomodorodefault();
     } else if (mode === "shortBreak") {
-     shortBreakdefault();
+      shortBreakdefault();
     } else if (mode === "longBreak") {
       longBreakdefault();
     }
@@ -171,7 +176,18 @@ function Pomodoro() {
   return (
     <div className="h-screen">
       <Navbar />
-      <NewTask />
+      <NewTask toggleCard={toggleCard} isCardOpen={isCardOpen} />
+      {isCardOpen && (
+        <Card
+          toggleCard={toggleCard}
+          pomodoroTimer={pomodoroTimer}
+          setPomodoroTimer={setPomodoroTimer}
+          shortBreakTimer={shortBreakTimer}
+          setShortBreakTimer={setShortBreakTimer}
+          longBreakTimer={longBreakTimer}
+          setLongBreakTimer={setLongBreakTimer}
+        />
+      )}
       <PomodoroMode
         activeMode={activeMode}
         isRunning={isRunning}
