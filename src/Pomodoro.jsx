@@ -72,7 +72,7 @@ function Pomodoro() {
 
   const updateDocumentTitle = (newTime) => {
     if(newTime != 0){
-      document.title = `Pomodoro Timer - ${formatTime(newTime)}`;
+      document.title = `${activeMode[0].toUpperCase() + activeMode.slice(1)} - ${formatTime(newTime)}`;
       }
       else{
         document.title = `Pomodoro Timer`;
