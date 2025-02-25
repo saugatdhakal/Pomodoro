@@ -7,6 +7,11 @@ import PomodoroMode from "./component/PomodoroMode";
 import breakSound from "./audio/bedside-clock-alarm-95792.mp3";
 
 function Pomodoro() {
+  // Timer durations in minutes
+  const [pomodoroTimer, setPomodoroTimer] = useState(1);
+  const [shortBreakTimer, setShortBreakTimer] = useState(1);
+  const [longBreakTimer, setLongBreakTimer] = useState(15);
+
   const [minutes, setMinutes] = useState(1);
   const totalTime = minutes * 60;
   const [currentTime, setCurrentTime] = useState(totalTime);
@@ -27,22 +32,26 @@ function Pomodoro() {
 
   const pomodorodefault = () => {
     setActiveMode("pomodoro");
-    setMinutes(25);
+    setMinutes(pomodoroTimer);
     setTimePercentage(0);
     setIsBreak(false);
+    setCurrentTime(pomodoroTimer * 60);
   };
+
   const shortBreakdefault = () => {
-    console.log("shortBreakdefault");
-    setMinutes(2);
+    setMinutes(shortBreakTimer);
     setActiveMode("shortBreak");
     setTimePercentage(0);
     setIsBreak(true);
+    setCurrentTime(shortBreakTimer * 60);
   };
+
   const longBreakdefault = () => {
-    setMinutes(2);
+    setMinutes(longBreakTimer);
     setActiveMode("longBreak");
     setTimePercentage(0);
     setIsBreak(true);
+    setCurrentTime(longBreakTimer * 60);
   };
 
   const playBreakSound = async () => {
@@ -61,6 +70,15 @@ function Pomodoro() {
     }
   };
 
+  const updateDocumentTitle = (newTime) => {
+    if(newTime != 0){
+      document.title = `Pomodoro Timer - ${formatTime(newTime)}`;
+      }
+      else{
+        document.title = `Pomodoro Timer`;
+      }
+  }
+
   useEffect(() => {
     let interval;
     if (isRunning && currentTime > 0) {
@@ -70,6 +88,7 @@ function Pomodoro() {
           setTimePercentage(
             Math.round(((totalTime - newTime) / totalTime) * 100)
           );
+          updateDocumentTitle(newTime);
           return newTime;
         });
       }, 1000);
@@ -124,17 +143,30 @@ function Pomodoro() {
   const handleModeChange = (mode) => {
     setActiveMode(mode);
     if (mode === "pomodoro") {
-      setMinutes(minutes);
-      setIsBreak(false);
+      pomodorodefault();
     } else if (mode === "shortBreak") {
-      setMinutes(minutes);
-      setIsBreak(true);
-      // Remove auto-start on mode change
+     shortBreakdefault();
     } else if (mode === "longBreak") {
-      setMinutes(minutes);
-      setIsBreak(true);
+      longBreakdefault();
     }
   };
+
+  // Initial setup
+  useEffect(() => {
+    setMinutes(pomodoroTimer);
+    setCurrentTime(pomodoroTimer * 60);
+  }, [pomodoroTimer]);
+
+  // Update currentTime when timer duration changes
+  useEffect(() => {
+    if (activeMode === "pomodoro") {
+      setCurrentTime(pomodoroTimer * 60);
+    } else if (activeMode === "shortBreak") {
+      setCurrentTime(shortBreakTimer * 60);
+    } else if (activeMode === "longBreak") {
+      setCurrentTime(longBreakTimer * 60);
+    }
+  }, [pomodoroTimer, shortBreakTimer, longBreakTimer, activeMode]);
 
   return (
     <div className="h-screen">
@@ -144,6 +176,9 @@ function Pomodoro() {
         activeMode={activeMode}
         isRunning={isRunning}
         onModeChange={handleModeChange}
+        pomodoroTimer={pomodoroTimer}
+        shortBreakTimer={shortBreakTimer}
+        longBreakTimer={longBreakTimer}
       />
       <Timer
         minutes={minutes}
