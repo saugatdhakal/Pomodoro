@@ -32,13 +32,14 @@ function Pomodoro() {
     setIsBreak(false);
   };
   const shortBreakdefault = () => {
+    console.log("shortBreakdefault");
     setMinutes(2);
     setActiveMode("shortBreak");
     setTimePercentage(0);
     setIsBreak(true);
   };
   const longBreakdefault = () => {
-    setMinutes(10);
+    setMinutes(2);
     setActiveMode("longBreak");
     setTimePercentage(0);
     setIsBreak(true);
@@ -76,10 +77,18 @@ function Pomodoro() {
       setIsRunning(false);
       if (isBreak) {
         // Break timer finished, switch back to pomodoro
+        playBreakSound();
         pomodorodefault();
       } else {
-        // Pomodoro timer finished, switch to break
-        setIsBreak(true);
+        // Pomodoro timer finished, start break
+        playBreakSound();
+        shortBreakdefault();
+        if (automaticBreak) {
+          // Start break timer after a delay
+          setTimeout(() => {
+            setIsRunning(true);
+          }, 2000);
+        }
       }
     }
 
@@ -89,21 +98,10 @@ function Pomodoro() {
   }, [isRunning, currentTime, totalTime, isBreak]);
 
   useEffect(() => {
-    setCurrentTime(minutes * 60);
-  }, [minutes]);
-
-  useEffect(() => {
     if (isBreak) {
-      playBreakSound();
-      shortBreakdefault();
-      if (automaticBreak) {
-        const breakTimer = setTimeout(() => {
-          setIsRunning(true);
-        }, 2000);
-        return () => clearTimeout(breakTimer);
-      }
+      setCurrentTime(minutes * 60);
     }
-  }, [isBreak]);
+  }, [isBreak, minutes]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -125,13 +123,16 @@ function Pomodoro() {
   };
   const handleModeChange = (mode) => {
     setActiveMode(mode);
-    setIsBreak(false);
     if (mode === "pomodoro") {
-      setMinutes(25);
+      setMinutes(minutes);
+      setIsBreak(false);
     } else if (mode === "shortBreak") {
-      setMinutes(1);
+      setMinutes(minutes);
+      setIsBreak(true);
+      // Remove auto-start on mode change
     } else if (mode === "longBreak") {
-      setMinutes(10);
+      setMinutes(minutes);
+      setIsBreak(true);
     }
   };
 
