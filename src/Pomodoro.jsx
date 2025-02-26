@@ -5,7 +5,10 @@ import Timer from "./Timer";
 import { useEffect } from "react";
 import PomodoroMode from "./component/PomodoroMode";
 import breakSound from "./audio/bedside-clock-alarm-95792.mp3";
-import Card from "./card";
+import phoneAlert from "./audio/phoneAlert.mp3";
+import Setting from "./Setting";
+
+
 
 function Pomodoro() {
   // Timer durations in minutes
@@ -30,6 +33,19 @@ function Pomodoro() {
     audio.load();
     setBreakAudio(audio);
   }, []);
+
+  const audioFiles = [
+    { name: "Break Sound", file: breakSound },
+    { name: "Phone Alert", file: phoneAlert },
+  ];
+  const [selectedAudio, setSelectedAudio] = useState(audioFiles[0]);
+
+  const handleAudioChange = (e) => {
+    const selectedFile = audioFiles.find((file) => file.name === e.target.value);
+    if (selectedFile) {
+      setSelectedAudio(selectedFile);
+    }
+  };
 
   const pomodorodefault = () => {
     setActiveMode("pomodoro");
@@ -175,10 +191,10 @@ function Pomodoro() {
 
   return (
     <div className="h-screen">
-      <Navbar />
+      <Navbar toggleCard={toggleCard} />
       <NewTask toggleCard={toggleCard} isCardOpen={isCardOpen} />
       {isCardOpen && (
-        <Card
+        <Setting
           toggleCard={toggleCard}
           pomodoroTimer={pomodoroTimer}
           setPomodoroTimer={setPomodoroTimer}

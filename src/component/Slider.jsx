@@ -1,6 +1,6 @@
 
 
-export default function CustomSlider({
+export default function  Slider({
   min = 1,
   max = 60,
   value = 30,
@@ -26,7 +26,7 @@ export default function CustomSlider({
   const leftPosition = `calc(${getPercentage()}% - ${handleOffset}px)`;
 
   return (
-    <div className="flex w-full max-w-lg m-auto items-center h-14 justify-center px-4">
+    <div className="flex w-full max-w-full m-auto items-center h-14 justify-center px-4">
       <div className="relative w-full py-1">
         {/* Track */}
         <div className="relative h-2 bg-gray-200 rounded-full">
