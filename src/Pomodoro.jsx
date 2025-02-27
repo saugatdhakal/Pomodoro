@@ -1,8 +1,7 @@
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import Navbar from "./Navbar";
 import NewTask from "./NewTask";
 import Timer from "./Timer";
-import { useEffect } from "react";
 import PomodoroMode from "./component/PomodoroMode";
 import breakSound from "./audio/bedside-clock-alarm-95792.mp3";
 import phoneAlert from "./audio/phoneAlert.mp3";

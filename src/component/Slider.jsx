@@ -3,6 +3,7 @@ export default function Slider({
   max = 60,
   step = 1,
   value = 30,
+  darkMode = false,
   onChange = () => {},
 }) {
   // Ensure value is within [min, max]
@@ -68,10 +69,10 @@ export default function Slider({
           </div>
 
           {/* Min/Max labels */}
-          <div className="absolute text-gray-800 -ml-1 bottom-0 left-0 -mb-6">
+          <div className={`absolute ${darkMode? 'text-white' :'text-gray-800'} -ml-1 bottom-0 left-0 -mb-7`}>
             {min}
           </div>
-          <div className="absolute text-gray-800 -mr-1 bottom-0 right-0 -mb-6">
+          <div className={`absolute ${darkMode? 'text-white' :'text-gray-800'} text-gray-800 -mr-1 bottom-0 right-0 -mb-7`}>
             {max}
           </div>
         </div>

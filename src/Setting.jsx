@@ -67,6 +67,7 @@ function Setting({
                 setShortBreakTimer={setShortBreakTimer}
                 longBreakTimer={longBreakTimer}
                 setLongBreakTimer={setLongBreakTimer}
+                theme={theme}
               />
             )}
             {activeSection === "Sounds" && (
@@ -76,6 +77,7 @@ function Setting({
                 handleAudioChange={handleAudioChange}
                 audioVolume={audioVolume}
                 setAudioVolume={setAudioVolume}
+                theme={theme}
               />
             )}
             {activeSection === "General" && (

@@ -7,12 +7,14 @@ function TimerSettings({
   setShortBreakTimer,
   longBreakTimer,
   setLongBreakTimer,
+  theme,
 }) {
   return (
     <div>
       <div className="">
         <h1 className="text-lg font-bold pl-4">Pomodoro</h1>
         <Slider
+          darkMode={theme === "dark"}
           min={5}
           max={60}
           value={pomodoroTimer}
@@ -22,6 +24,7 @@ function TimerSettings({
       <div className="">
         <h1 className="text-lg font-bold pl-4">Short Break</h1>
         <Slider
+          darkMode={theme === "dark"}
           min={5}
           max={60}
           value={shortBreakTimer}
@@ -31,6 +34,7 @@ function TimerSettings({
       <div className="">
         <h1 className="text-lg font-bold pl-4">Long Break</h1>
         <Slider
+          darkMode={theme === "dark"}
           min={5}
           max={60}
           value={longBreakTimer}

@@ -4,7 +4,8 @@ function SoundSetting({
   selectedAudio,
   handleAudioChange,
   audioVolume,
-  setAudioVolume
+  setAudioVolume,
+  theme
 
 }) {
   return (
@@ -28,6 +29,7 @@ function SoundSetting({
         <div className="flex flex-col gap-1">
             <label className="text-lg font-bold">Volume</label>
             <Slider
+              darkMode={theme === "dark"}
               min={0}
               max={1}
               step={0.5}
