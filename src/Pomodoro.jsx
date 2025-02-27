@@ -1,18 +1,19 @@
-import { useState } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import Navbar from "./Navbar";
 import NewTask from "./NewTask";
 import Timer from "./Timer";
-import { useEffect } from "react";
 import PomodoroMode from "./component/PomodoroMode";
 import breakSound from "./audio/bedside-clock-alarm-95792.mp3";
-import Card from "./card";
+import phoneAlert from "./audio/phoneAlert.mp3";
+import Setting from "./Setting";
+import { ThemeContext } from "./ThemeContext";
 
 function Pomodoro() {
+  const { theme } = useContext(ThemeContext);
   // Timer durations in minutes
   const [pomodoroTimer, setPomodoroTimer] = useState(25);
   const [shortBreakTimer, setShortBreakTimer] = useState(5);
   const [longBreakTimer, setLongBreakTimer] = useState(15);
-
   const [minutes, setMinutes] = useState(1);
   const totalTime = minutes * 60;
   const [currentTime, setCurrentTime] = useState(totalTime);
@@ -20,16 +21,43 @@ function Pomodoro() {
   const [timePercentage, setTimePercentage] = useState(0);
   const [isBreak, setIsBreak] = useState(false);
   const [activeMode, setActiveMode] = useState("pomodoro");
-  const automaticBreak = true;
-  const [breakAudio, setBreakAudio] = useState(null);
+  const [automaticBreak, setAutomaticBreak] = useState(true);
   const [isCardOpen, setIsCardOpen] = useState(false);
-  // Initialize audio on component mount
-  useEffect(() => {
-    const audio = new Audio(breakSound);
-    audio.preload = "auto";
-    audio.load();
-    setBreakAudio(audio);
-  }, []);
+  const [audioVolume, setAudioVolume] = useState(0.5);
+
+  const audioRef = useRef(null);
+
+  const audioFiles = [
+    { name: "Break Sound", file: breakSound },
+    { name: "Phone Alert", file: phoneAlert },
+  ];
+
+  const [selectedAudio, setSelectedAudio] = useState(audioFiles[0].file);
+
+  const handleAudioChange = (e) => {
+    const selectedFile = audioFiles.find(
+      (file) => file.name === e.target.value
+    );
+    if (selectedFile) {
+      setSelectedAudio(selectedFile.file);
+    }
+  };
+  const playBreakSound = async () => {
+    if (audioRef.current) {
+      try {
+        audioRef.current.currentTime = 0;
+        audioRef.current.volume = audioVolume;
+        await audioRef.current.play();
+
+        setTimeout(() => {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }, 2000);
+      } catch (error) {
+        console.error("Error playing audio:", error);
+      }
+    }
+  };
 
   const pomodorodefault = () => {
     setActiveMode("pomodoro");
@@ -53,22 +81,6 @@ function Pomodoro() {
     setTimePercentage(0);
     setIsBreak(true);
     setCurrentTime(longBreakTimer * 60);
-  };
-
-  const playBreakSound = async () => {
-    if (breakAudio) {
-      try {
-        breakAudio.currentTime = 0;
-        breakAudio.volume = 0.5;
-        await breakAudio.play();
-        setTimeout(() => {
-          breakAudio.pause();
-          breakAudio.currentTime = 0;
-        }, 2000);
-      } catch (error) {
-        console.error("Error playing audio:", error);
-      }
-    }
   };
 
   const updateDocumentTitle = (newTime) => {
@@ -174,11 +186,22 @@ function Pomodoro() {
   }, [pomodoroTimer, shortBreakTimer, longBreakTimer, activeMode]);
 
   return (
-    <div className="h-screen">
-      <Navbar />
+    <div
+      className={`h-screen ${
+        theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"
+      } `}
+    >
+      <audio
+        ref={audioRef}
+        src={selectedAudio}
+        preload="auto"
+        style={{ display: "none" }}
+      />
+
+      <Navbar toggleCard={toggleCard} />
       <NewTask toggleCard={toggleCard} isCardOpen={isCardOpen} />
       {isCardOpen && (
-        <Card
+        <Setting
           toggleCard={toggleCard}
           pomodoroTimer={pomodoroTimer}
           setPomodoroTimer={setPomodoroTimer}
@@ -186,6 +209,13 @@ function Pomodoro() {
           setShortBreakTimer={setShortBreakTimer}
           longBreakTimer={longBreakTimer}
           setLongBreakTimer={setLongBreakTimer}
+          audioFiles={audioFiles}
+          selectedAudio={selectedAudio}
+          handleAudioChange={handleAudioChange}
+          audioVolume={audioVolume}
+          setAudioVolume={setAudioVolume}
+          automaticBreak={automaticBreak}
+          setAutomaticBreak={setAutomaticBreak}
         />
       )}
       <PomodoroMode

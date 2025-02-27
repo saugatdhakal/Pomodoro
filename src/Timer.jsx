@@ -2,6 +2,7 @@ import { Flat } from "@alptugidin/react-circular-progress-bar";
 import StartButton from "./component/StartButton";
 import PauseButton from "./component/PauseButton";
 import RestartButton from "./component/RestartButton";
+
 function Timer({
   minutes,
   setMinutes,

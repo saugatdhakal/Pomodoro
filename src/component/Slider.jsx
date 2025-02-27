@@ -1,9 +1,9 @@
-
-
-export default function CustomSlider({
+export default function Slider({
   min = 1,
   max = 60,
+  step = 1,
   value = 30,
+  darkMode = false,
   onChange = () => {},
 }) {
   // Ensure value is within [min, max]
@@ -21,12 +21,11 @@ export default function CustomSlider({
 
   // Offset the handle so it's fully within the track.
   // The handle is 16px wide (Tailwind .w-4), so half is 8px.
-  // This ensures the handle circle doesn't go off the edge.
   const handleOffset = 8;
   const leftPosition = `calc(${getPercentage()}% - ${handleOffset}px)`;
 
   return (
-    <div className="flex w-full max-w-lg m-auto items-center h-14 justify-center px-4">
+    <div className="flex w-full max-w-full m-auto items-center h-14 justify-center px-4">
       <div className="relative w-full py-1">
         {/* Track */}
         <div className="relative h-2 bg-gray-200 rounded-full">
@@ -70,10 +69,10 @@ export default function CustomSlider({
           </div>
 
           {/* Min/Max labels */}
-          <div className="absolute text-gray-800 -ml-1 bottom-0 left-0 -mb-6">
+          <div className={`absolute ${darkMode? 'text-white' :'text-gray-800'} -ml-1 bottom-0 left-0 -mb-7`}>
             {min}
           </div>
-          <div className="absolute text-gray-800 -mr-1 bottom-0 right-0 -mb-6">
+          <div className={`absolute ${darkMode? 'text-white' :'text-gray-800'} text-gray-800 -mr-1 bottom-0 right-0 -mb-7`}>
             {max}
           </div>
         </div>
@@ -83,6 +82,7 @@ export default function CustomSlider({
           type="range"
           min={min}
           max={max}
+          step={step}
           value={clampedValue}
           onChange={handleChange}
           className="absolute top-0 left-0 w-full h-4 cursor-pointer opacity-0"
