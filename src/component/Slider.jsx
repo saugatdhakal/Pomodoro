@@ -1,9 +1,12 @@
 export default function Slider({
   min = 1,
   max = 60,
+  leftLabel = "",
+  rightLabel = "",
   step = 1,
   value = 30,
   darkMode = false,
+  showValueInPercentage = false,
   onChange = () => {},
 }) {
   // Ensure value is within [min, max]
@@ -50,7 +53,7 @@ export default function Slider({
                 <div className="relative shadow-md">
                   {/* Tooltip bubble */}
                   <div className="bg-blue-200 text-black font-bold text-xs rounded py-1 px-4">
-                    {clampedValue}
+                    {showValueInPercentage ? `${getPercentage()}%` : clampedValue}
                   </div>
                   {/* Tooltip arrow */}
                   <svg
@@ -69,11 +72,19 @@ export default function Slider({
           </div>
 
           {/* Min/Max labels */}
-          <div className={`absolute ${darkMode? 'text-white' :'text-gray-800'} -ml-1 bottom-0 left-0 -mb-7`}>
-            {min}
+          <div
+            className={`absolute ${
+              darkMode ? "text-white" : "text-gray-800"
+            } -ml-1 bottom-0 left-0 -mb-7`}
+          >
+            {leftLabel != "" ? leftLabel : min}
           </div>
-          <div className={`absolute ${darkMode? 'text-white' :'text-gray-800'} text-gray-800 -mr-1 bottom-0 right-0 -mb-7`}>
-            {max}
+          <div
+            className={`absolute ${
+              darkMode ? "text-white" : "text-gray-800"
+            } text-gray-800 -mr-1 bottom-0 right-0 -mb-7`}
+          >
+            {rightLabel != "" ? rightLabel : max}
           </div>
         </div>
 
