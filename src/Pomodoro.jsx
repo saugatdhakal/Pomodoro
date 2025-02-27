@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import Navbar from "./Navbar";
 import NewTask from "./NewTask";
 import Timer from "./Timer";
@@ -7,8 +7,10 @@ import PomodoroMode from "./component/PomodoroMode";
 import breakSound from "./audio/bedside-clock-alarm-95792.mp3";
 import phoneAlert from "./audio/phoneAlert.mp3";
 import Setting from "./Setting";
+import { ThemeContext } from "./ThemeContext";
 
 function Pomodoro() {
+  const { theme } = useContext(ThemeContext);
   // Timer durations in minutes
   const [pomodoroTimer, setPomodoroTimer] = useState(1);
   const [shortBreakTimer, setShortBreakTimer] = useState(5);
@@ -23,9 +25,9 @@ function Pomodoro() {
   const [automaticBreak, setAutomaticBreak] = useState(true);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [audioVolume, setAudioVolume] = useState(0.5);
-  
+
   const audioRef = useRef(null);
-  
+
   const audioFiles = [
     { name: "Break Sound", file: breakSound },
     { name: "Phone Alert", file: phoneAlert },
@@ -185,7 +187,11 @@ function Pomodoro() {
   }, [pomodoroTimer, shortBreakTimer, longBreakTimer, activeMode]);
 
   return (
-    <div className="h-screen">
+    <div
+      className={`h-screen ${
+        theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"
+      } `}
+    >
       <audio
         ref={audioRef}
         src={selectedAudio}
@@ -211,7 +217,6 @@ function Pomodoro() {
           setAudioVolume={setAudioVolume}
           automaticBreak={automaticBreak}
           setAutomaticBreak={setAutomaticBreak}
-
         />
       )}
       <PomodoroMode

@@ -1,10 +1,15 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import Pomodoro from './Pomodoro.jsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import Pomodoro from "./Pomodoro.jsx";
 document.title = `Pomodoro Timer`;
-createRoot(document.getElementById('root')).render(
+import { ThemeProvider } from "./ThemeContext.jsx";
+import ThemeToggle from "./ThemeToggle.jsx";
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <Pomodoro />
-  </StrictMode>,
-)
+    <ThemeProvider>
+      
+      <Pomodoro />
+    </ThemeProvider>
+  </StrictMode>
+);

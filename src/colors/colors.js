@@ -1,17 +1,17 @@
 export const modeColors = {
     pomodoro: {
       active: "#2b7fff",
-      light: "#dbeafe",
+      light: "#bedbff",
       tailwindClass: "bg-blue-500",
     },
     shortBreak: {
       active: "#22c55e",
-      light: "#dcfce7",
+      light: "#b9f8cf",
       tailwindClass: "bg-green-500",
     },
     longBreak: {
       active: "#ad46ff",
-      light: "#f3e8ff",
+      light: "#e9d4ff",
       tailwindClass: "bg-purple-500",
     },
   };
