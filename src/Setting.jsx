@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import Slider from "./component/Slider";
 import TimerSettings from "./component/TimerSettings";
+import GeneralSetting from "./component/GeneralSetting";
+import SoundSetting from "./component/SoundSetting";
 
 function Setting({
   toggleCard,
@@ -11,6 +12,13 @@ function Setting({
   setShortBreakTimer,
   longBreakTimer,
   setLongBreakTimer,
+  audioFiles,
+  selectedAudio,
+  handleAudioChange,
+  audioVolume,
+  setAudioVolume,
+  setAutomaticBreak,
+  automaticBreak,
 }) {
   const [activeSection, setActiveSection] = useState("Timers");
 
@@ -58,20 +66,20 @@ function Setting({
               />
             )}
             {activeSection === "Sounds" && (
-              <div className="flex flex-col gap-4">
-                <label for="alertSound" className="text-lg font-bold">
-                  Select Alert Sound:
-                </label>
-                <select
-                  id="alertSound"
-                  className="w-full p-2 border-2 border-slate-300 rounded-md"
-                >
-                  <option value="default">Default</option>
-                  <option value="custom">Custom</option>
-                </select>
-              </div>
+              <SoundSetting
+                audioFiles={audioFiles}
+                selectedAudio={selectedAudio}
+                handleAudioChange={handleAudioChange}
+                audioVolume={audioVolume}
+                setAudioVolume={setAudioVolume}
+              />
             )}
-            {activeSection === "General" && <p>General settings go here...</p>}
+            {activeSection === "General" && (
+              <GeneralSetting
+                automaticBreak={automaticBreak}
+                setAutomaticBreak={setAutomaticBreak}
+              />
+            )}
           </div>
         </div>
       </div>

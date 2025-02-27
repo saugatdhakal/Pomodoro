@@ -1,8 +1,7 @@
-
-
-export default function  Slider({
+export default function Slider({
   min = 1,
   max = 60,
+  step = 1,
   value = 30,
   onChange = () => {},
 }) {
@@ -21,7 +20,6 @@ export default function  Slider({
 
   // Offset the handle so it's fully within the track.
   // The handle is 16px wide (Tailwind .w-4), so half is 8px.
-  // This ensures the handle circle doesn't go off the edge.
   const handleOffset = 8;
   const leftPosition = `calc(${getPercentage()}% - ${handleOffset}px)`;
 
@@ -83,6 +81,7 @@ export default function  Slider({
           type="range"
           min={min}
           max={max}
+          step={step}
           value={clampedValue}
           onChange={handleChange}
           className="absolute top-0 left-0 w-full h-4 cursor-pointer opacity-0"
