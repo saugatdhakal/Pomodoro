@@ -84,6 +84,7 @@ function Setting({
               <GeneralSetting
                 automaticBreak={automaticBreak}
                 setAutomaticBreak={setAutomaticBreak}
+                theme={theme}
               />
             )}
           </div>

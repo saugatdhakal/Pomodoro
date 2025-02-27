@@ -16,6 +16,7 @@ function Timer({
   handlePause,
   handleRestart,
   activeMode,
+  theme
 }) {
   const modeColor = {
     pomodoro: {
@@ -62,7 +63,7 @@ function Timer({
             valueFamily: "Trebuchet MS",
             textSize: 13,
             textWeight: "bold",
-            textColor: "#000000",
+            textColor: theme === "dark" ? "#ffffff" : "#000000",
             textFamily: "Trebuchet MS",
             loadingTime: 1000,
             miniCircleColor: modeColor[activeMode].active,

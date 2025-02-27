@@ -11,8 +11,8 @@ import { ThemeContext } from "./ThemeContext";
 function Pomodoro() {
   const { theme } = useContext(ThemeContext);
   // Timer durations in minutes
-  const [pomodoroTimer, setPomodoroTimer] = useState(25);
-  const [shortBreakTimer, setShortBreakTimer] = useState(5);
+  const [pomodoroTimer, setPomodoroTimer] = useState(1);
+  const [shortBreakTimer, setShortBreakTimer] = useState(1);
   const [longBreakTimer, setLongBreakTimer] = useState(15);
   const [minutes, setMinutes] = useState(1);
   const totalTime = minutes * 60;
@@ -40,6 +40,16 @@ function Pomodoro() {
     );
     if (selectedFile) {
       setSelectedAudio(selectedFile.file);
+      const audio = new Audio(selectedFile.file);
+      try {
+        audio.play();
+        setTimeout(() => {
+          audio.pause();
+          audio.currentTime = 0;
+        }, 2000);
+      } catch (error) {
+        console.error("Error playing test sound:", error);
+      }
     }
   };
   const playBreakSound = async () => {
@@ -239,6 +249,7 @@ function Pomodoro() {
         handlePause={handlePause}
         handleRestart={handleRestart}
         activeMode={activeMode}
+        theme={theme}
       />
     </div>
   );
