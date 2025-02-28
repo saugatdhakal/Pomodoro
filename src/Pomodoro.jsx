@@ -75,8 +75,6 @@ function Pomodoro() {
     }
   };
 
-
-
   const handleSession = () => {
     setPomodoroSession((pomodoroSession) => pomodoroSession + 1);
     if (pomodoroSession === 3) {
@@ -163,7 +161,7 @@ function Pomodoro() {
       } else {
         // Pomodoro timer finished, start break
         playBreakSound();
-        sessionFlag? handleSession():shortBreakdefault();
+        sessionFlag ? handleSession() : shortBreakdefault();
         if (automaticBreak) {
           // Start break timer after a delay
           setTimeout(() => {
@@ -235,68 +233,70 @@ function Pomodoro() {
 
   return (
     <div
-      className={`h-screen ${
+      className={`min-h-screen h-full overflow-hidden ${
         theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"
-      } `}
+      }`}
     >
-      <audio
-        ref={audioRef}
-        src={selectedAudio}
-        preload="auto"
-        style={{ display: "none" }}
-      />
-
-      <Navbar toggleCard={toggleCard} />
-      <NewTask toggleCard={toggleCard} isCardOpen={isCardOpen}  />
-      {isCardOpen && (
-        <Setting
-          toggleCard={toggleCard}
-          pomodoroTimer={pomodoroTimer}
-          setPomodoroTimer={setPomodoroTimer}
-          shortBreakTimer={shortBreakTimer}
-          setShortBreakTimer={setShortBreakTimer}
-          longBreakTimer={longBreakTimer}
-          setLongBreakTimer={setLongBreakTimer}
-          audioFiles={audioFiles}
-          selectedAudio={selectedAudio}
-          handleAudioChange={handleAudioChange}
-          audioVolume={audioVolume}
-          setAudioVolume={setAudioVolume}
-          automaticBreak={automaticBreak}
-          setAutomaticBreak={setAutomaticBreak}
-          automaticPomodoro={automaticPomodoro}
-          setAutomaticPomodoro={setAutomaticPomodoro}
-          sessionFlag={sessionFlag}
-          setSessionFlag={setSessionFlag}
+      <div className="relative">
+        <audio
+          ref={audioRef}
+          src={selectedAudio}
+          preload="auto"
+          style={{ display: "none" }}
         />
-      )}
-      <PomodoroMode
-        pomodoroSession={pomodoroSession}
-        shortBreakSession={shortBreakSession}
-        longBreakSession={longBreakSession}
-        activeMode={activeMode}
-        isRunning={isRunning}
-        onModeChange={handleModeChange}
-        pomodoroTimer={pomodoroTimer}
-        shortBreakTimer={shortBreakTimer}
-        longBreakTimer={longBreakTimer}
-        sessionFlag={sessionFlag}
-      />
-      <Timer
-        minutes={minutes}
-        setMinutes={setMinutes}
-        totalTime={totalTime}
-        currentTime={currentTime}
-        timePercentage={timePercentage}
-        formatTime={formatTime}
-        isRunning={isRunning}
-        setIsRunning={setIsRunning}
-        handleStart={handleStart}
-        handlePause={handlePause}
-        handleRestart={handleRestart}
-        activeMode={activeMode}
-        theme={theme}
-      />
+
+        <Navbar toggleCard={toggleCard} />
+        <NewTask toggleCard={toggleCard} isCardOpen={isCardOpen} />
+        {isCardOpen && (
+          <Setting
+            toggleCard={toggleCard}
+            pomodoroTimer={pomodoroTimer}
+            setPomodoroTimer={setPomodoroTimer}
+            shortBreakTimer={shortBreakTimer}
+            setShortBreakTimer={setShortBreakTimer}
+            longBreakTimer={longBreakTimer}
+            setLongBreakTimer={setLongBreakTimer}
+            audioFiles={audioFiles}
+            selectedAudio={selectedAudio}
+            handleAudioChange={handleAudioChange}
+            audioVolume={audioVolume}
+            setAudioVolume={setAudioVolume}
+            automaticBreak={automaticBreak}
+            setAutomaticBreak={setAutomaticBreak}
+            automaticPomodoro={automaticPomodoro}
+            setAutomaticPomodoro={setAutomaticPomodoro}
+            sessionFlag={sessionFlag}
+            setSessionFlag={setSessionFlag}
+          />
+        )}
+        <PomodoroMode
+          pomodoroSession={pomodoroSession}
+          shortBreakSession={shortBreakSession}
+          longBreakSession={longBreakSession}
+          activeMode={activeMode}
+          isRunning={isRunning}
+          onModeChange={handleModeChange}
+          pomodoroTimer={pomodoroTimer}
+          shortBreakTimer={shortBreakTimer}
+          longBreakTimer={longBreakTimer}
+          sessionFlag={sessionFlag}
+        />
+        <Timer
+          minutes={minutes}
+          setMinutes={setMinutes}
+          totalTime={totalTime}
+          currentTime={currentTime}
+          timePercentage={timePercentage}
+          formatTime={formatTime}
+          isRunning={isRunning}
+          setIsRunning={setIsRunning}
+          handleStart={handleStart}
+          handlePause={handlePause}
+          handleRestart={handleRestart}
+          activeMode={activeMode}
+          theme={theme}
+        />
+      </div>
     </div>
   );
 }
