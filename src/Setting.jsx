@@ -30,7 +30,7 @@ function Setting({
   const { theme } = useContext(ThemeContext);
 
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-100">
+    <div  className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-100">
       <div
         className={`rounded-2xl shadow-2xl w-11/12 max-w-3xl mx-4 ${
           theme === "dark"
@@ -61,17 +61,17 @@ function Setting({
         <div className="flex flex-col md:flex-row h-[calc(100vh-250px)] max-h-[500px]">
           {/* Navigation Sidebar */}
           <nav
-            className={`md:w-56 border-b md:border-b-0 md:border-r ${
+            className={`md:w-56 border-b md:border-b-0 md:border-r overflow-x-auto ${
               theme === "dark"
                 ? "bg-gray-800/50 border-gray-700"
                 : "bg-gray-50 border-gray-200"
             }`}
           >
-            <ul className="flex md:flex-col p-2">
+            <ul className="flex md:flex-col p-2 min-w-max md:min-w-0">
               {["Timers", "Sounds", "General"].map((section) => (
                 <li key={section} className="w-full">
                   <button
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                    className={`whitespace-nowrap w-full flex items-center gap-3 px-4 py-2 md:py-3 rounded-lg transition-colors text-sm md:text-base ${
                       activeSection === section
                         ? theme === "dark"
                           ? "bg-blue-900/20 text-blue-400 font-medium"
@@ -82,10 +82,12 @@ function Setting({
                     }`}
                     onClick={() => setActiveSection(section)}
                   >
-                    {section === "Timers" && <FiClock size={20} />}
-                    {section === "Sounds" && <FiVolume2 size={20} />}
-                    {section === "General" && <FiSettings size={20} />}
-                    <span>{section}</span>
+                    <span className="text-xl md:text-base">
+                      {section === "Timers" && <FiClock size={18} />}
+                      {section === "Sounds" && <FiVolume2 size={18} />}
+                      {section === "General" && <FiSettings size={18} />}
+                    </span>
+                    <span className="text-sm md:text-base">{section}</span>
                   </button>
                 </li>
               ))}
