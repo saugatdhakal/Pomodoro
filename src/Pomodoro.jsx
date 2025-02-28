@@ -24,6 +24,9 @@ function Pomodoro() {
   const [automaticBreak, setAutomaticBreak] = useState(true);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [audioVolume, setAudioVolume] = useState(0.5);
+  const [pomodoroSession, setPomodoroSession] = useState(0);
+  const [shortBreakSession, setShortBreakSession] = useState(0);
+  const [longBreakSession, setLongBreakSession] = useState(0);
 
   const audioRef = useRef(null);
 
@@ -69,6 +72,22 @@ function Pomodoro() {
       }
     }
   };
+
+  const handleSession = () => {
+    setPomodoroSession((pomodoroSession) => pomodoroSession + 1);
+    if (pomodoroSession === 2) {
+      longBreakdefault();
+      setLongBreakSession((longBreakSession) => longBreakSession + 1);
+    } else {
+      shortBreakdefault();
+      setShortBreakSession((shortBreakSession) => shortBreakSession + 1);
+    }
+  };
+  function resetSession() {
+    setPomodoroSession(0);
+    setShortBreakSession(0);
+    setLongBreakSession(0);
+  }
 
   const pomodorodefault = () => {
     setActiveMode("pomodoro");
@@ -120,13 +139,16 @@ function Pomodoro() {
     } else if (isRunning && currentTime === 0) {
       setIsRunning(false);
       if (isBreak) {
+        if (longBreakSession === 1) {
+          resetSession();
+        }
         // Break timer finished, switch back to pomodoro
         playBreakSound();
         pomodorodefault();
       } else {
         // Pomodoro timer finished, start break
         playBreakSound();
-        shortBreakdefault();
+        handleSession();
         if (automaticBreak) {
           // Start break timer after a delay
           setTimeout(() => {
@@ -230,6 +252,9 @@ function Pomodoro() {
         />
       )}
       <PomodoroMode
+        pomodoroSession={pomodoroSession}
+        shortBreakSession={shortBreakSession}
+        longBreakSession={longBreakSession}
         activeMode={activeMode}
         isRunning={isRunning}
         onModeChange={handleModeChange}

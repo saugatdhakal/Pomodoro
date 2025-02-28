@@ -1,4 +1,4 @@
-function PomodoroMode({ activeMode, onModeChange, isRunning }) {
+function PomodoroMode({ activeMode, onModeChange, isRunning,pomodoroSession, shortBreakSession, longBreakSession }) {
   const buttonClass = (mode) => {
     const colors = {
       pomodoro: {
@@ -37,21 +37,21 @@ function PomodoroMode({ activeMode, onModeChange, isRunning }) {
         onClick={() => !isRunning && onModeChange("pomodoro")}
         disabled={isRunning && activeMode !== "pomodoro"}
       >
-        Pomodoro
+        Pomodoro {pomodoroSession}  
       </button>
       <button
         className={buttonClass("shortBreak")}
         onClick={() => !isRunning && onModeChange("shortBreak")}
         disabled={isRunning && activeMode !== "shortBreak"}
       >
-        Short Break
+        Short Break {shortBreakSession}
       </button>
       <button
         className={buttonClass("longBreak")}
         onClick={() => !isRunning && onModeChange("longBreak")}
         disabled={isRunning && activeMode !== "longBreak"}
       >
-        Long Break
+        Long Break {longBreakSession}
       </button>
     </div>
   );
