@@ -52,8 +52,26 @@ A modern, feature-rich Pomodoro Timer built with React to help you boost product
 
 ## Project Structure
 
+After cloning the repository and installing the dependencies, your project structure should look like this:
+
 ```bash
-npm install
+Pomodoro/
+├── public/
+│   ├── index.html
+│   └── ...
+├── src/
+│   ├── components/
+│   │   ├── Timer.jsx
+│   │   ├── Controls.jsx
+│   │   └── ...
+│   ├── App.jsx
+│   ├── index.css
+│   ├── index.jsx
+│   └── ...
+├── .gitignore
+├── package.json
+├── README.md
+└── vite.config.js
 ```
 
 ## Contributing
