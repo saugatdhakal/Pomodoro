@@ -17,6 +17,7 @@ function TimerSettings({
           darkMode={theme === "dark"}
           min={1}
           max={60}
+          toolTipPrefix="min"
           value={pomodoroTimer}
           onChange={setPomodoroTimer}
         />
@@ -26,6 +27,7 @@ function TimerSettings({
         <Slider
           darkMode={theme === "dark"}
           min={1}
+          toolTipPrefix="min"
           max={60}
           value={shortBreakTimer}
           onChange={setShortBreakTimer}
@@ -36,6 +38,7 @@ function TimerSettings({
         <Slider
           darkMode={theme === "dark"}
           min={1}
+          toolTipPrefix="min"
           max={60}
           value={longBreakTimer}
           onChange={setLongBreakTimer}

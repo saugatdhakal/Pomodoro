@@ -22,8 +22,10 @@ function Pomodoro() {
   const [isBreak, setIsBreak] = useState(false);
   const [activeMode, setActiveMode] = useState("pomodoro");
   const [automaticBreak, setAutomaticBreak] = useState(true);
+  const [automaticPomodoro, setAutomaticPomodoro] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [audioVolume, setAudioVolume] = useState(0.5);
+  const [sessionFlag, setSessionFlag] = useState(false);
   const [pomodoroSession, setPomodoroSession] = useState(0);
   const [shortBreakSession, setShortBreakSession] = useState(0);
   const [longBreakSession, setLongBreakSession] = useState(0);
@@ -73,9 +75,11 @@ function Pomodoro() {
     }
   };
 
+
+
   const handleSession = () => {
     setPomodoroSession((pomodoroSession) => pomodoroSession + 1);
-    if (pomodoroSession === 2) {
+    if (pomodoroSession === 3) {
       longBreakdefault();
       setLongBreakSession((longBreakSession) => longBreakSession + 1);
     } else {
@@ -122,6 +126,11 @@ function Pomodoro() {
       document.title = `Pomodoro Timer`;
     }
   };
+  useEffect(() => {
+    if (!sessionFlag) {
+      resetSession();
+    }
+  }, [sessionFlag]);
 
   useEffect(() => {
     let interval;
@@ -139,16 +148,22 @@ function Pomodoro() {
     } else if (isRunning && currentTime === 0) {
       setIsRunning(false);
       if (isBreak) {
-        if (longBreakSession === 1) {
+        if (sessionFlag && longBreakSession === 1) {
           resetSession();
         }
         // Break timer finished, switch back to pomodoro
         playBreakSound();
         pomodorodefault();
+        if (automaticPomodoro) {
+          // Start pomodoro timer after a 2sec delay
+          setTimeout(() => {
+            setIsRunning(true);
+          }, 2000);
+        }
       } else {
         // Pomodoro timer finished, start break
         playBreakSound();
-        handleSession();
+        sessionFlag? handleSession():shortBreakdefault();
         if (automaticBreak) {
           // Start break timer after a delay
           setTimeout(() => {
@@ -232,7 +247,7 @@ function Pomodoro() {
       />
 
       <Navbar toggleCard={toggleCard} />
-      <NewTask toggleCard={toggleCard} isCardOpen={isCardOpen} />
+      <NewTask toggleCard={toggleCard} isCardOpen={isCardOpen}  />
       {isCardOpen && (
         <Setting
           toggleCard={toggleCard}
@@ -249,6 +264,10 @@ function Pomodoro() {
           setAudioVolume={setAudioVolume}
           automaticBreak={automaticBreak}
           setAutomaticBreak={setAutomaticBreak}
+          automaticPomodoro={automaticPomodoro}
+          setAutomaticPomodoro={setAutomaticPomodoro}
+          sessionFlag={sessionFlag}
+          setSessionFlag={setSessionFlag}
         />
       )}
       <PomodoroMode
@@ -261,6 +280,7 @@ function Pomodoro() {
         pomodoroTimer={pomodoroTimer}
         shortBreakTimer={shortBreakTimer}
         longBreakTimer={longBreakTimer}
+        sessionFlag={sessionFlag}
       />
       <Timer
         minutes={minutes}

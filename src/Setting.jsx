@@ -20,6 +20,10 @@ function Setting({
   setAudioVolume,
   setAutomaticBreak,
   automaticBreak,
+  automaticPomodoro,
+  setAutomaticPomodoro,
+  sessionFlag,
+  setSessionFlag,
 }) {
   const [activeSection, setActiveSection] = useState("Timers");
   const { theme, setTheme } = useContext(ThemeContext);
@@ -87,6 +91,10 @@ function Setting({
                 automaticBreak={automaticBreak}
                 setAutomaticBreak={setAutomaticBreak}
                 theme={theme}
+                automaticPomodoro={automaticPomodoro}
+                setAutomaticPomodoro={setAutomaticPomodoro}
+                sessionFlag={sessionFlag}
+                setSessionFlag={setSessionFlag}
               />
             )}
           </div>

@@ -6,6 +6,7 @@ export default function Slider({
   step = 1,
   value = 30,
   darkMode = false,
+  toolTipPrefix = "",
   showValueInPercentage = false,
   onChange = () => {},
 }) {
@@ -52,8 +53,8 @@ export default function Slider({
               >
                 <div className="relative shadow-md">
                   {/* Tooltip bubble */}
-                  <div className="bg-blue-200 text-black font-bold text-xs rounded py-1 px-4">
-                    {showValueInPercentage ? `${getPercentage()}%` : clampedValue}
+                  <div className="bg-blue-200 text-black font-bold text-xs rounded py-1 px-5 whitespace-nowrap">
+                    {showValueInPercentage ? `${getPercentage()}%` : clampedValue} {toolTipPrefix? toolTipPrefix : ""}
                   </div>
                   {/* Tooltip arrow */}
                   <svg
