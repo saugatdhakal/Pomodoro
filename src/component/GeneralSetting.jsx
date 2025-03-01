@@ -10,7 +10,7 @@ function GeneralSetting({
 }) {
   return (
     <div className="flex flex-col gap-4 w-full p-4">
-      <label className="text-2xl font-bold mb-4">General Setting</label>
+     
       <ThemeToggle />
       <div className="flex flex-col gap-4 w-full">
         <label className="text-lg font-bold">Automatic Break</label>
