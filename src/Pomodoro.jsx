@@ -6,6 +6,7 @@ import PomodoroMode from "./component/PomodoroMode";
 import breakSound from "./audio/bedside-clock-alarm-95792.mp3";
 import phoneAlert from "./audio/phoneAlert.mp3";
 import Setting from "./Setting";
+import MusicPlayer from "./component/MusicPlayer";
 import { ThemeContext } from "./ThemeContext";
 
 function Pomodoro() {
@@ -244,6 +245,7 @@ function Pomodoro() {
           preload="auto"
           style={{ display: "none" }}
         />
+        <MusicPlayer/>
 
         <Navbar toggleCard={toggleCard} />
         <NewTask toggleCard={toggleCard} isCardOpen={isCardOpen} />
