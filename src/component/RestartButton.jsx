@@ -15,14 +15,14 @@ function RestartButton({ onClick, activeMode }) {
   return (
     <button
       onClick={handleClick}
-      className={`border-2 cursor-pointer ${
+      className={`border-2 cursor-pointer relative ${
         theme === "dark" ? "border-white text-white" : "border-black text-black"
       }  p-3 rounded-full text-2xl transition-colors ${getHoverClasses(
         activeMode
       )}`}
     >
       <MdRestartAlt
-        className={`transform transition-transform duration-500 ${
+        className={`transform  transition-transform duration-500 ${
           rotated ? "rotate-360" : "rotate-0"
         }`}
       />
