@@ -5,6 +5,8 @@ import lofi3 from "../audio/Music/lofi/lofi-3.mp3";
 import jazz1 from "../audio/Music/jazz/jazz-1.mp3";
 import jazz2 from "../audio/Music/jazz/jazz-2.mp3";
 import jazz3 from "../audio/Music/jazz/jazz-3.mp3";
+import lofi from "../assets/images/lofi.png";
+import jazz from "../assets/images/jazz.png";
 
 import {
   FaPlay,
@@ -17,10 +19,11 @@ import {
   FaVolumeMute,
 } from "react-icons/fa";
 
-function MusicPlayer({theme}) {
+function MusicPlayer({ theme }) {
   const audioList = [
     {
       name: "Lofi",
+      image: lofi,
       tracks: [
         {
           src: lofi1,
@@ -33,11 +36,12 @@ function MusicPlayer({theme}) {
         {
           src: lofi3,
           title: "lofi-3",
-        }
+        },
       ],
     },
     {
       name: "Jazz",
+      image: jazz,
       tracks: [
         {
           src: jazz1,
@@ -50,7 +54,7 @@ function MusicPlayer({theme}) {
         {
           src: jazz3,
           title: "jazz-3",
-        }
+        },
       ],
     },
   ];
@@ -189,7 +193,13 @@ function MusicPlayer({theme}) {
 
   return (
     <div className="relative ">
-      <div className={`w-full fixed bottom-0 ${theme == "dark"? "bg-gray-800 text-white":"  bg-white border-t-1 text-black"}  p-4`}>
+      <div
+        className={`w-full fixed bottom-0 ${
+          theme == "dark"
+            ? "bg-gray-800 text-white"
+            : "  bg-white border-t-1 text-black"
+        }  p-4`}
+      >
         <div className="flex justify-between items-center">
           <div className="flex items-between space-x-4 text-xl">
             <button
@@ -236,35 +246,51 @@ function MusicPlayer({theme}) {
         <audio ref={audioRef} loop preload="auto" src={selectedAudio} />
       </div>
       <div
-  className={`fixed bottom-12 z-50 w-full rounded-t-xl 
+        className={`fixed bottom-12 z-50 w-full rounded-t-xl
     ${musicAblemCard ? "block" : "hidden"}
-    ${theme == "dark"? "bg-gray-800 text-white":"  bg-white border-t-1 text-black"}
+    ${
+      theme == "dark"
+        ? "bg-gray-800 text-white"
+        : "  bg-white border-t-1 text-black"
+    }
   `}
->
-  <div className="p-4">
-    <div className="flex items-center justify-start space-x-4 overflow-x-auto">
-      {audioList.map((album, albumIndex) => (
-        <div
-          key={albumIndex}
-          onClick={() => {
-            handleAlbumChange(albumIndex);
-          }}
-          className={`relative cursor-pointer rounded-lg p-3 transition-all
-            min-w-[120px] h-auto aspect-square
+      >
+        <div className="p-4">
+          <div className="flex items-center justify-start space-x-4 overflow-x-auto">
+            {audioList.map((album, albumIndex) => (
+              <div
+                key={albumIndex}
+                onClick={() => {
+                  handleAlbumChange(albumIndex);
+                }}
+                className={`relative cursor-pointer rounded-lg transition-all
+            min-w-[120px] h-auto aspect-square overflow-hidden
             ${
               currentAlbumIndex === albumIndex
-                ? "bg-gray-700"
-                : "bg-gray-600 hover:bg-gray-700"
+                ? "border-1 border-white"
+                : ` ${(theme = "dark"
+                    ? "hover:border-1 border-white"
+                    : "hover:border-2 border-black")} `
             }`}
-        >
-          <h3 className="absolute bottom-0 left-0 p-2 font-medium text-white">
-            {album.name}
-          </h3>
+              >
+                {album.image ? (
+                  <img
+                    src={album.image}
+                    alt={album.name}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="absolute inset-0 w-full h-full bg-gray-600"></div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <h3 className="absolute bottom-0 left-0 p-2 font-medium text-white">
+                  {album.name}
+                </h3>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-</div>
+      </div>
     </div>
   );
 }
