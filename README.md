@@ -9,6 +9,7 @@ A modern, feature-rich Pomodoro Timer built with React to help you boost product
   - Pomodoro (25 minutes)
   - Short Break (2 minutes)
   - Long Break (10 minutes)
+  - Persist data even refesh
 
 - **Visual Features**
 
@@ -28,6 +29,14 @@ A modern, feature-rich Pomodoro Timer built with React to help you boost product
   - Automatic break timer after Pomodoro session
   - Automatic return to Pomodoro mode after break
   - Sound alerts for session transitions
+
+- **Customizable Settings**
+  - Ability to set custom durations for Pomodoro, Short Break, and Long Break
+  - Option to enable/disable sound notifications
+  - Dark mode for reduced eye strain
+
+- **Statistics and Reports**
+  - Track number of completed Pomodoro sessions
 
 ## Technologies Used
 
@@ -58,11 +67,13 @@ After cloning the repository and installing the dependencies, your project struc
 Pomodoro/
 ├── public/
 │   ├── index.html
-│   └── ...
+│   └── favicon.ico
 ├── src/
 │   ├── components/
 │   │   ├── Timer.jsx
 │   │   ├── Controls.jsx
+│   │   ├── Settings.jsx
+│   │   ├── Statistics.jsx
 │   │   └── ...
 │   ├── App.jsx
 │   ├── index.css
