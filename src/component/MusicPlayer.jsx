@@ -2,6 +2,10 @@ import { useRef, useState } from "react";
 import lofi1 from "../audio/Music/lofi/lofi-1.mp3";
 import lofi2 from "../audio/Music/lofi/lofi-2.mp3";
 import lofi3 from "../audio/Music/lofi/lofi-3.mp3";
+import jazz1 from "../audio/Music/jazz/jazz-1.mp3";
+import jazz2 from "../audio/Music/jazz/jazz-2.mp3";
+import jazz3 from "../audio/Music/jazz/jazz-3.mp3";
+
 import {
   FaPlay,
   FaPause,
@@ -26,15 +30,27 @@ function MusicPlayer() {
           src: lofi2,
           title: "lofi-2",
         },
+        {
+          src: lofi3,
+          title: "lofi-3",
+        }
       ],
     },
     {
       name: "Jazz",
       tracks: [
         {
-          src: lofi3,
-          title: "lofi-3`",
+          src: jazz1,
+          title: "jazz-1",
         },
+        {
+          src: jazz2,
+          title: "jazz-2",
+        },
+        {
+          src: jazz3,
+          title: "jazz-3",
+        }
       ],
     },
   ];
