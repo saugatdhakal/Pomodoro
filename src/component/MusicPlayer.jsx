@@ -17,7 +17,7 @@ import {
   FaVolumeMute,
 } from "react-icons/fa";
 
-function MusicPlayer() {
+function MusicPlayer({theme}) {
   const audioList = [
     {
       name: "Lofi",
@@ -189,7 +189,7 @@ function MusicPlayer() {
 
   return (
     <div className="relative ">
-      <div className="w-full fixed bottom-0 bg-gray-800 text-white p-4">
+      <div className={`w-full fixed bottom-0 ${theme == "dark"? "bg-gray-800 text-white":"  bg-white border-t-1 text-black"}  p-4`}>
         <div className="flex justify-between items-center">
           <div className="flex items-between space-x-4 text-xl">
             <button
@@ -236,8 +236,9 @@ function MusicPlayer() {
         <audio ref={audioRef} loop preload="auto" src={selectedAudio} />
       </div>
       <div
-  className={`fixed bottom-12 z-50 w-full rounded-t-xl bg-gray-800
+  className={`fixed bottom-12 z-50 w-full rounded-t-xl 
     ${musicAblemCard ? "block" : "hidden"}
+    ${theme == "dark"? "bg-gray-800 text-white":"  bg-white border-t-1 text-black"}
   `}
 >
   <div className="p-4">

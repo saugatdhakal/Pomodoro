@@ -1,6 +1,6 @@
 import { useState, useRef, useContext, useEffect } from "react";
 import Navbar from "./Navbar";
-import NewTask from "./NewTask";
+import Current from "./Current";
 import Timer from "./Timer";
 import PomodoroMode from "./component/PomodoroMode";
 import breakSound from "./audio/bedside-clock-alarm-95792.mp3";
@@ -245,10 +245,9 @@ function Pomodoro() {
           preload="auto"
           style={{ display: "none" }}
         />
-        <MusicPlayer/>
-
+        <MusicPlayer theme={theme}/>
         <Navbar toggleCard={toggleCard} />
-        <NewTask toggleCard={toggleCard} isCardOpen={isCardOpen} />
+        <Current theme={theme} isCardOpen={isCardOpen} />
         {isCardOpen && (
           <Setting
             toggleCard={toggleCard}
