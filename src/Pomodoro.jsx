@@ -8,13 +8,20 @@ import phoneAlert from "./audio/phoneAlert.mp3";
 import Setting from "./Setting";
 import MusicPlayer from "./component/MusicPlayer";
 import { ThemeContext } from "./ThemeContext";
+import pomodoroIcon from "./assets/pomodoro.svg";
 
 function Pomodoro() {
   const { theme } = useContext(ThemeContext);
   // Timer durations in minutes
-  const [pomodoroTimer, setPomodoroTimer] = useState(parseInt(localStorage.getItem('pomodoroTimer')) || 25);
-  const [shortBreakTimer, setShortBreakTimer] = useState(parseInt(localStorage.getItem('shortBreakTimer') || 5));
-  const [longBreakTimer, setLongBreakTimer] = useState(parseInt(localStorage.getItem('longBreakTimer') || 15));
+  const [pomodoroTimer, setPomodoroTimer] = useState(
+    parseInt(localStorage.getItem("pomodoroTimer")) || 20
+  );
+  const [shortBreakTimer, setShortBreakTimer] = useState(
+    parseInt(localStorage.getItem("shortBreakTimer") || 5)
+  );
+  const [longBreakTimer, setLongBreakTimer] = useState(
+    parseInt(localStorage.getItem("longBreakTimer") || 15)
+  );
   const [minutes, setMinutes] = useState(1);
   const totalTime = minutes * 60;
   const [currentTime, setCurrentTime] = useState(totalTime);
@@ -30,6 +37,7 @@ function Pomodoro() {
   const [pomodoroSession, setPomodoroSession] = useState(0);
   const [shortBreakSession, setShortBreakSession] = useState(0);
   const [longBreakSession, setLongBreakSession] = useState(0);
+  const [notificationPermission, setNotificationPermission] = useState(localStorage.getItem("notificationPermission") === "true" || false);
 
   const audioRef = useRef(null);
 
@@ -152,6 +160,7 @@ function Pomodoro() {
         }
         // Break timer finished, switch back to pomodoro
         playBreakSound();
+        showNotification("Break time is over!");
         pomodorodefault();
         if (automaticPomodoro) {
           // Start pomodoro timer after a 2sec delay
@@ -162,6 +171,7 @@ function Pomodoro() {
       } else {
         // Pomodoro timer finished, start break
         playBreakSound();
+        showNotification("Time to take a break!");
         sessionFlag ? handleSession() : shortBreakdefault();
         if (automaticBreak) {
           // Start break timer after a delay
@@ -219,17 +229,44 @@ function Pomodoro() {
   useEffect(() => {
     setMinutes(pomodoroTimer);
     setCurrentTime(pomodoroTimer * 60);
-    localStorage.setItem('pomodoroTimer', pomodoroTimer);
+    localStorage.setItem("pomodoroTimer", pomodoroTimer);
   }, [pomodoroTimer]);
 
   useEffect(() => {
-    localStorage.setItem('shortBreakTimer', shortBreakTimer);
+    localStorage.setItem("shortBreakTimer", shortBreakTimer);
   }, [shortBreakTimer]);
 
   useEffect(() => {
-    localStorage.setItem('longBreakTimer', longBreakTimer);
-  } , [longBreakTimer]);
+    localStorage.setItem("longBreakTimer", longBreakTimer);
+  }, [longBreakTimer]);
 
+  const requestNotificationPermission = () => {
+    if (!("Notification" in window)) {
+      alert("This browser does not support desktop notifications.");
+      return;
+    }
+
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        setNotificationPermission(true);
+        localStorage.setItem("notificationPermission", true);
+      }
+    });
+  };
+  const showNotification = (message) => {
+    if (Notification.permission === "granted") {
+      new Notification("Pomodoro Timer", {
+        body: message,
+        icon: pomodoroIcon,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (notificationPermission) {
+      requestNotificationPermission();
+    }     
+  }, [notificationPermission]);
 
   // Update currentTime when timer duration changes
   useEffect(() => {
@@ -255,7 +292,7 @@ function Pomodoro() {
           preload="auto"
           style={{ display: "none" }}
         />
-        <MusicPlayer theme={theme}/>
+        <MusicPlayer theme={theme} />
         <Navbar toggleCard={toggleCard} />
         <Current theme={theme} isCardOpen={isCardOpen} />
         {isCardOpen && (
@@ -278,6 +315,8 @@ function Pomodoro() {
             setAutomaticPomodoro={setAutomaticPomodoro}
             sessionFlag={sessionFlag}
             setSessionFlag={setSessionFlag}
+            notificationPermission={notificationPermission}
+            setNotificationPermission={setNotificationPermission}
           />
         )}
         <PomodoroMode
