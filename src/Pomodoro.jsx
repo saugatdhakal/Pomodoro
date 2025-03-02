@@ -12,9 +12,9 @@ import { ThemeContext } from "./ThemeContext";
 function Pomodoro() {
   const { theme } = useContext(ThemeContext);
   // Timer durations in minutes
-  const [pomodoroTimer, setPomodoroTimer] = useState(25);
-  const [shortBreakTimer, setShortBreakTimer] = useState(5);
-  const [longBreakTimer, setLongBreakTimer] = useState(15);
+  const [pomodoroTimer, setPomodoroTimer] = useState(parseInt(localStorage.getItem('pomodoroTimer')) || 25);
+  const [shortBreakTimer, setShortBreakTimer] = useState(parseInt(localStorage.getItem('shortBreakTimer') || 5));
+  const [longBreakTimer, setLongBreakTimer] = useState(parseInt(localStorage.getItem('longBreakTimer') || 15));
   const [minutes, setMinutes] = useState(1);
   const totalTime = minutes * 60;
   const [currentTime, setCurrentTime] = useState(totalTime);
@@ -219,7 +219,17 @@ function Pomodoro() {
   useEffect(() => {
     setMinutes(pomodoroTimer);
     setCurrentTime(pomodoroTimer * 60);
+    localStorage.setItem('pomodoroTimer', pomodoroTimer);
   }, [pomodoroTimer]);
+
+  useEffect(() => {
+    localStorage.setItem('shortBreakTimer', shortBreakTimer);
+  }, [shortBreakTimer]);
+
+  useEffect(() => {
+    localStorage.setItem('longBreakTimer', longBreakTimer);
+  } , [longBreakTimer]);
+
 
   // Update currentTime when timer duration changes
   useEffect(() => {
