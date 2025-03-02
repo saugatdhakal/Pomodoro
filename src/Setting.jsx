@@ -25,6 +25,8 @@ function Setting({
   setAutomaticPomodoro,
   sessionFlag,
   setSessionFlag,
+  notificationPermission,
+  setNotificationPermission
 }) {
   const [activeSection, setActiveSection] = useState("Timers");
   const { theme } = useContext(ThemeContext);
@@ -130,6 +132,8 @@ function Setting({
                   sessionFlag={sessionFlag}
                   setSessionFlag={setSessionFlag}
                   theme={theme}
+                  notificationPermission={notificationPermission}
+                  setNotificationPermission={setNotificationPermission}
                 />
               )}
             </div>

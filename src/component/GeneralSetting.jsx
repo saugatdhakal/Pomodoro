@@ -7,10 +7,11 @@ function GeneralSetting({
   setAutomaticPomodoro,
   sessionFlag,
   setSessionFlag,
+  notificationPermission,
+  setNotificationPermission,
 }) {
   return (
     <div className="flex flex-col gap-4 w-full p-4">
-     
       <ThemeToggle />
       <div className="flex flex-col gap-4 w-full">
         <label className="text-lg font-bold">Automatic Break</label>
@@ -51,22 +52,42 @@ function GeneralSetting({
         <div className="flex flex-col gap-4 w-full">
           <label className="text-lg font-bold">Session Flag</label>
           <div className="flex items-center gap-2 w-full">
-          <button 
-            onClick={() => setSessionFlag(!sessionFlag)}
-            className={`relative inline-flex items-center h-6 rounded-full w-11 
+            <button
+              onClick={() => setSessionFlag(!sessionFlag)}
+              className={`relative inline-flex items-center h-6 rounded-full w-11 
               ${sessionFlag ? "bg-blue-600" : "bg-gray-300"}`}
-          >
-            <span
-              className={`transform transition ease-in-out duration-200 
+            >
+              <span
+                className={`transform transition ease-in-out duration-200 
                 ${sessionFlag ? "translate-x-5" : "translate-x-1"} 
                 inline-block w-4 h-4 bg-white rounded-full`}
-            />
-          </button>
-          <label className="w-full">
-          Use the Pomodoro sequence: Pomodoro → short break, repeat 4x, then one long break </label>
-        </div>
+              />
+            </button>
+            <label className="w-full">
+              Use the Pomodoro sequence: Pomodoro → short break, repeat 4x, then
+              one long break{" "}
+            </label>
           </div>
-          
+        </div>
+        <div className="flex flex-col gap-4 w-full">
+          <label className="text-lg font-bold">Notification </label>
+          <div className="flex items-center gap-2 w-full">
+            <button
+              onClick={() => setNotificationPermission(!notificationPermission)}
+              className={`relative inline-flex items-center h-6 rounded-full w-11 
+              ${notificationPermission ? "bg-blue-600" : "bg-gray-300"}`}
+            >
+              <span
+                className={`transform transition ease-in-out duration-200 
+                ${notificationPermission ? "translate-x-5" : "translate-x-1"} 
+                inline-block w-4 h-4 bg-white rounded-full`}
+              />
+            </button>
+            <label className="w-full">
+              Display a notification when the timer is done
+            </label>
+          </div>
+        </div>
       </div>
     </div>
   );
