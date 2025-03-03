@@ -1,6 +1,17 @@
 # Pomodoro Timer
 
 A modern, feature-rich Pomodoro Timer built with React to help you boost productivity and manage your work sessions effectively.
+## Screenshot
+
+![Pomodoro Timer Desktop](https://github.com/saugatdhakal/Pomodoro/raw/main/src/assets/Project%20SS/pomodoro1.png)
+
+![Pomodoro Timer Mobile](https://github.com/saugatdhakal/Pomodoro/raw/main/src/assets/Project%20SS/pomodoro2.png)
+
+![Pomodoro Timer Music Album](https://github.com/saugatdhakal/Pomodoro/raw/main/src/assets/Project%20SS/pomodoro3.png)
+
+![Pomodoro Setting](https://github.com/saugatdhakal/Pomodoro/raw/main/src/assets/Project%20SS/pomodoro4.png)
+
+
 
 ## Features
 
